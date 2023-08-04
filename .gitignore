@@ -1,0 +1,10 @@
+tmp*
+__pycache__/
+mlruns/
+outputs/
+data/
+.vscode/
+results/
+build/
+*.egg-info/
+

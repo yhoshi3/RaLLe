@@ -1,0 +1,18 @@
+{
+    "chain_config": {
+        "dataset": {
+            "dataset_name": "AY2",
+            "num_evaluate": -1,
+            "batch_size": 1
+        },
+        "len_chain": 1,
+        "chain": [
+            {
+                "prompt_template": "'What is the most relevant Wikipedia title to the entity \"' + '{}'.format(question).split('[START_ENT] ')[1].split(' [END_ENT]')[0] + '\" in the context of \"' + '{}'.format(question).split('[START_ENT]')[0][-100:] + '{}'.format(question).split('[START_ENT]')[1].split('[END_ENT]')[0] + '{}'.format(question).split('[END_ENT]')[1][:100] + '''...\"?\n\nPlease answer only the Wikipedia title.\n\nAnswer: '''",
+                "function": "LLM",
+                "llm_name": "llama-2-13b-chat",
+                "f-strings_or_eval": "eval"
+            }
+        ]
+    }
+}

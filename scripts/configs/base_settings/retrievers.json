@@ -1,0 +1,26 @@
+{
+    "bm25_subset_499992": {
+        "type": "bm25",
+        "index_path": "data/bm25/corpus/kilt/kilt_w100_title_modified_subset_499992",
+        "corpus_name": "kilt_subset_499992"
+    },
+    "flat_subset_499992": {
+        "type": "faiss",
+        "query_encoder_name": "e5-8b",
+        "index_path": "data/dense/e5/8b/corpus/kilt/index/faiss-flat/subset_1024_499992.index",
+        "corpus_name": "kilt_subset_499992"
+    },
+    "hnsw_subset_499992": {
+        "type": "faiss",
+        "query_encoder_name": "e5-8b",
+        "index_path": "data/dense/e5/8b/corpus/kilt/index/faiss-hnsw/subset_m16_efc40_1024_499992.index",
+        "corpus_name": "kilt_subset_499992"
+    },
+    "diskann_subset_499992": {
+        "type": "diskann",
+        "query_encoder_name": "e5-8b",
+        "index_directory": "data/dense/e5/8b/corpus/kilt/index/diskann/subset_499992",
+        "index_prefix": "index",
+        "corpus_name": "kilt_subset_499992"
+    }
+}

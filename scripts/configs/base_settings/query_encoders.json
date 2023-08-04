@@ -1,0 +1,36 @@
+{
+    "m-e5-8b": {
+        "model_type": "intfloat/multilingual-e5-large",
+        "device_map": {
+            "": 0
+        },
+        "quantization_config": {
+            "quantization_type": "transformers.BitsAndBytesConfig",
+            "quantization_config_config": {
+                "load_in_8bit": true,
+                "llm_int8_threshold": 6.0,
+                "has_fp16_weights": false
+            }
+        }
+    },
+    "e5-8b": {
+        "model_type": "intfloat/e5-large-v2",
+        "device_map": {
+            "": 0
+        },
+        "quantization_config": {
+            "quantization_type": "transformers.BitsAndBytesConfig",
+            "quantization_config_config": {
+                "load_in_8bit": true,
+                "llm_int8_threshold": 6.0,
+                "has_fp16_weights": false
+            }
+        }
+    },
+    "e5-32b": {
+        "model_type": "intfloat/e5-large-v2",
+        "device_map": {
+            "": 0
+        }
+    }
+}

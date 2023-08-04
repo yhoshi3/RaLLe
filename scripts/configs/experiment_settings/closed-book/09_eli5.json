@@ -1,0 +1,18 @@
+{
+    "chain_config": {
+        "dataset": {
+            "dataset_name": "ELI5",
+            "num_evaluate": -1,
+            "batch_size": 1
+        },
+        "len_chain": 1,
+        "chain": [
+            {
+                "prompt_template": "Explain '{question}' as if I were five years old.\n\nAnswer: ",
+                "function": "LLM",
+                "llm_name": "llama-2-13b-chat",
+                "f-strings_or_eval": "f-strings"
+            }
+        ]
+    }
+}

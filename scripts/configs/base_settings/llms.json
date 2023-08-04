@@ -1,0 +1,47 @@
+{
+    "oasst-sft-1-pythia-12b": {
+        "model_args": {
+            "model_type": "OpenAssistant/oasst-sft-1-pythia-12b",
+            "device_map": {"": 0},
+            "quantization_config": {
+                "quantization_type": "transformers.BitsAndBytesConfig",
+                "quantization_config_config": {
+                    "load_in_8bit": true,
+                    "llm_int8_threshold": 6.0,
+                    "has_fp16_weights": false
+                }
+            }
+        },
+        "pipeline_args": {
+            "max_new_tokens": 512,
+            "top_k": 50,
+            "temperature": 0.0,
+            "repetition_penalty": 1.204819277108434
+        }
+    },
+    "llama-2-13b-chat": {
+        "model_args": {
+            "model_type": "meta-llama/Llama-2-13b-chat",
+            "device_map": {"": 0},
+            "quantization_config": {
+                "quantization_type": "transformers.BitsAndBytesConfig",
+                "quantization_config_config": {
+                    "load_in_8bit": true,
+                    "llm_int8_threshold": 6.0,
+                    "has_fp16_weights": false
+                }
+            }
+        },
+        "pipeline_args": {
+            "max_new_tokens": 512,
+            "top_k": 50,
+            "temperature": 0.0,
+            "repetition_penalty": 1.204819277108434
+        }
+    },
+    "gpt-35-turbo": {
+        "model_args": {
+            "model_type": "openai"
+        }
+    }
+}

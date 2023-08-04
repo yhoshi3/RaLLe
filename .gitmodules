@@ -1,0 +1,6 @@
+[submodule "DiskANN"]
+	path = DiskANN
+	url = https://github.com/microsoft/DiskANN.git
+[submodule "KILT"]
+	path = KILT
+	url = https://github.com/facebookresearch/KILT.git

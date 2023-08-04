@@ -1,0 +1,13 @@
+diff --git a/include/scratch.h b/include/scratch.h
+index 3b44f8f..9c9dddd 100644
+--- a/include/scratch.h
++++ b/include/scratch.h
+@@ -21,7 +21,7 @@
+ 
+ // SSD Index related limits
+ #define MAX_GRAPH_DEGREE 512
+-#define SECTOR_LEN (size_t)4096
++#define SECTOR_LEN (size_t)16384
+ #define MAX_N_SECTOR_READS 128
+ 
+ namespace diskann

@@ -1,0 +1,18 @@
+{
+    "chain_config": {
+        "dataset": {
+            "dataset_name": "T-REx",
+            "num_evaluate": -1,
+            "batch_size": 1
+        },
+        "len_chain": 1,
+        "chain": [
+            {
+                "prompt_template": "'What is the ' + '\"' + '{}'.format(question).split('[SEP] ')[1] + '\" of \"' + '{}'.format(question).split(' [SEP]')[0] + '\"' + ''' in 5 words or less?\n\n''' + '{}'.format(question).split('[SEP] ')[1] + ': '",
+                "function": "LLM",
+                "f-strings_or_eval": "eval",
+                "llm_name": "llama-2-13b-chat"
+            }
+        ]
+    }
+}

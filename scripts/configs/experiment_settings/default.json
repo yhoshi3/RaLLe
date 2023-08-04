@@ -1,0 +1,25 @@
+{
+    "chain_config": {
+        "dataset": {
+            "dataset_name": "NQ",
+            "num_evaluate": -1,
+            "batch_size": 1
+        },
+        "len_chain": 2,
+        "chain": [
+            {
+                "prompt_template": "{question}",
+                "function": "Retriever",
+                "retriever_name": "diskann_kilt_subset_499992",
+                "npassage": 5,
+                "f-strings_or_eval": "f-strings"
+            },
+            {
+                "prompt_template": "Referring to the following document, answer \"{question}?\" in 5 words or less.\n\n{response[0]}\n\nAnswer: ",
+                "function": "LLM",
+                "llm_name": "oasst-sft-1-pythia-12b",
+                "f-strings_or_eval": "f-strings"
+            }
+        ]
+    }
+}

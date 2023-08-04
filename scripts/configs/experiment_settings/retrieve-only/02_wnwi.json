@@ -1,0 +1,19 @@
+{
+    "chain_config": {
+        "dataset": {
+            "dataset_name": "WnWi",
+            "num_evaluate": -1,
+            "batch_size": 20
+        },
+        "len_chain": 1,
+        "chain": [
+            {
+                "prompt_template": "'What is \"' + '{}'.format(question).split('[START_ENT]')[1].split('[END_ENT]')[0][1:-1] + '\" ?'",
+                "function": "Retriever",
+                "retriever_name": "e5-8b_flat",
+                "npassage": 5,
+                "f-strings_or_eval": "eval"
+            }
+        ]
+    }
+}

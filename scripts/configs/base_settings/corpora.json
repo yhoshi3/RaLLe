@@ -1,0 +1,18 @@
+{
+    "kilt_subset_499992": {
+        "corpus_path": "data/text/corpus/kilt/kilt_w100_title_modified_subset_499992.tsv",
+        "delimiter": "\t",
+        "col_doc_id": 0,
+        "col_text": 1,
+        "col_title": 2,
+        "doc_id_to_wikipedia_id_mapping_path": "data/text/corpus/kilt/doc_id_to_wikipedia_id_mapping.p"
+    },
+    "kilt": {
+        "corpus_path": "data/text/corpus/kilt/kilt_w100_title.tsv",
+        "delimiter": "\t",
+        "col_doc_id": 0,
+        "col_text": 1,
+        "col_title": 2,
+        "doc_id_to_wikipedia_id_mapping_path": "data/text/corpus/kilt/doc_id_to_wikipedia_id_mapping.p"
+    }
+}

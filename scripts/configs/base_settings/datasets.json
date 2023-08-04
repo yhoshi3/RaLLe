@@ -1,0 +1,30 @@
+{
+    "develop": {
+        "FEV": "KILT/data/fever-train-kilt.jsonl",
+        "AY2": "KILT/data/aidayago2-train-kilt.jsonl",
+        "WnWi": "KILT/data/wned-dev-kilt.jsonl",
+        "WnCw": "KILT/data/cweb-dev-kilt.jsonl",
+        "T-REx": "KILT/data/trex-train-kilt.jsonl",
+        "zsRE": "KILT/data/structured_zeroshot-train-kilt.jsonl",
+        "NQ": "KILT/data/nq-train-kilt.jsonl",
+        "HoPo": "KILT/data/hotpotqa-train-kilt.jsonl",
+        "TQA": "KILT/data/triviaqa-train-kilt.jsonl",
+        "ELI5": "KILT/data/eli5-train-kilt.jsonl",
+        "WoW": "KILT/data/wow-train-kilt.jsonl",
+        "NQ_100": "data/text/query/kilt/nq-train-kilt_100.jsonl"
+    },
+    "test": {
+        "FEV": "KILT/data/fever-dev-kilt.jsonl",
+        "AY2": "KILT/data/aidayago2-dev-kilt.jsonl",
+        "WnWi": "KILT/data/wned-dev-kilt.jsonl",
+        "WnCw": "KILT/data/cweb-dev-kilt.jsonl",
+        "T-REx": "KILT/data/trex-dev-kilt.jsonl",
+        "zsRE": "KILT/data/structured_zeroshot-dev-kilt.jsonl",
+        "NQ": "KILT/data/nq-dev-kilt.jsonl",
+        "HoPo": "KILT/data/hotpotqa-dev-kilt.jsonl",
+        "TQA": "KILT/data/triviaqa-dev-kilt.jsonl",
+        "ELI5": "KILT/data/eli5-dev-kilt.jsonl",
+        "WoW": "KILT/data/wow-dev-kilt.jsonl",
+        "NQ_100": "data/text/query/kilt/nq-dev-kilt_100.jsonl"
+    }
+}
