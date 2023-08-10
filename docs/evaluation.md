@@ -10,10 +10,9 @@ python scripts/experiment.py --config_exp_path=scripts/configs/experiment_settin
 ```
 
 The directory containing the configuration file can be specified using the `--config_exp_path` option.
-The contents of the configuration file are as follows:
+The example of the [configuration file](../scripts/configs/experiment_settings/sample_evaluation/nq.json) are as follows:
 
 ```json
-// scripts/configs/experiment_settings/sample_evaluation/nq.json
 {
     "chain_config": {
         "dataset": {
