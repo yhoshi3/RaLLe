@@ -13,7 +13,7 @@ The directory containing the configuration file can be specified using the `--co
 The contents of the configuration file are as follows:
 
 ```json
-scripts/configs/experiment_settings/sample_evaluation/nq.json
+// scripts/configs/experiment_settings/sample_evaluation/nq.json
 {
     "chain_config": {
         "dataset": {
