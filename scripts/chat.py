@@ -651,7 +651,7 @@ def run_chat(args):
 if __name__ == "__main__":
 
     parser = argparse.ArgumentParser("run evaluate")
-    parser.add_argument("--config", default='scripts/configs/experiment_settings/default.json', help="configuration of retrieval-augmented LLM for evaluateion")
+    parser.add_argument("--config", default='scripts/configs/experiment_settings/default.json', help="configuration of retrieval-augmented LLM for evaluation")
     parser.add_argument("--config_exp_path", default='scripts/configs/experiment_settings', help="path to config_exp directory")
     parser.add_argument("--config_system", default='scripts/configs/base_settings/system.json', help="path to system config file")
     parser.add_argument("--config_llms", default='scripts/configs/base_settings/llms.json', help="path to llm config file")

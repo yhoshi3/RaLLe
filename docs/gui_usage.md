@@ -1,11 +1,11 @@
-## RᴀLLᴇ Usage on GUI
+# RᴀLLᴇ Usage on GUI
 
-Once the document indexing is completed, the retrievers (and the corresponding indice) and LLMs can be loaded via the [Gradio](https://www.gradio.app/)-based GUI to establish the inference chain that comprises the R-LLM.
+Once the document indexing is completed, the retrievers (and the corresponding indices) and LLMs can be loaded via the [Gradio](https://www.gradio.app/)-based GUI to establish the inference chain that comprises the R-LLM.
 Run [scripts/chat.py](../scripts/chat.py) to launch the development screen on your localhost.
 
-An overview of the main uses of RᴀLLᴇ on GUI is presented in this video.
+An overview of the main uses of RᴀLLᴇ on GUI is presented in [this video](https://youtu.be/JYbm75qnfTg).
 
-### Load LLMs and Retrievers (and corresponding indices)
+## Load LLMs and Retrievers (and corresponding indices)
 
 To load the pre-trained language models and retrievers (indices) in the `Load Models` tab, 
 1. Select the LLMs and Retrievers you want to use from the list of available models (and correponding indices) written in the configuration file.
@@ -13,7 +13,7 @@ To load the pre-trained language models and retrievers (indices) in the `Load Mo
 
 ![Load Model](figures/load_models.png)
 
-### Chain Construction
+## Chain Construction
 
 The chain of action enables users to design pipelines for multi-step inference of R-LLMs, such as [*retrieve*]-[*generate*], or more intricate workflows such as [*rewrite query*]-[*retrieve*]-[*summarize the retrieved document*]-...-[*generate*].
 
@@ -41,27 +41,32 @@ Additional functionality on this tab:
 - `Highlighted text` highlights the gold answer in the output, or gold Wikipedia ID, if exists.
 - You can view the selected QA data.
 
-### Simple Chat Interface
+**Notes:**
+
+- The models, indexes, corpora, and datasets that can be loaded can be specified in the configuration file located in the [scripts/configs/base_settings](../scripts/configs/base_settings) directory.
+- The available maximum chain length and the number of questions displayed in the `Develop chain` tab are configurable in the [scripts/configs/base_settings/system.json](../scripts/configs/base_settings/system.json).
+
+## Simple Chat Interface
 
 On the `Chat` tab, you can test out the developed best practices using a simple chat interface.
 
 <img src="figures/chat_ai.png" width="70%">
 
-### Evaluate the Chain and Save config
+## Evaluate and Save config
+
+### Evaluate the Developed Chain
 
 You can evaluate the developed chain on a dev set of the dataset.
 Specify the run name, number of questions to test (-1 for all questions), and batch size.
 The evaluation results can be viewed on MLflow GUI after running MLflow.
+To evaluate, click the `Evaluate` button after specifying the run name, the number of questions to test (-1 for all questions), and the suitable batch size.
 
-Also in this tab, you can save the developed chain config.
-Click the `Refresh (redraw) configuration` to update the config and save the config by clicking `Save Config` button.
+The evaluation can also be carried out using [evaluation script](../scripts/experiment.py). For detailed instructions, please refer to [this documentation](evaluation.md).
 
-In the `Config` tab, you can evaluate the developed pipeline on a dataset.
-To evaluate, click the `Evaluate` button after specifying the run name, the number of questions to test (-1 for all questions), and the batch size.
-The evaluation results will be displayed on the MLflow GUI after running the MLflow.
+### Save Config
 
-You can save the developed chain configuration by clicking the `Save Config` button.
-Please click the `Refresh (redraw) configuration` button before save the configuration.
+You can save the developed chain configuration.
+Click the `Refresh configuration` to update the config and save the config by clicking `Save Config` button.
 
-<img src="figures/config_eval.png" width="70%">
+<img src="figures/config.png" width="70%">
 

@@ -151,5 +151,5 @@ Prepared index data so far can be registered in config files as below. Note that
 - [corpus](../scripts/configs/base_settings/corpora.json)
 - [dataset](../scripts/configs/base_settings/datasets.json)
 
-Congraturations! You are now ready to use RᴀLLᴇ GUI. Please refer to the [instruction](gui_usage.md) or [screencast](https://www.youtube.com/watch?v=ShMNYSBJNnc) for the usage.
+Congratulations! You are now ready to use RᴀLLᴇ GUI. Please refer to the [instruction](gui_usage.md) or [screencast](https://youtu.be/JYbm75qnfTg) for the usage.
 

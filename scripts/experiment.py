@@ -42,8 +42,8 @@ def experiment(args):
     used_llm = list(used_llm)
     used_ret = list(used_ret)
 
-    assert len(used_llm) <= 1, "multi llms are not supported in this script"
-    assert len(used_ret) <= 1, "multi retrievers are not supported in this script"
+    assert len(used_llm) <= 1, "multiple llms are not supported in this script"
+    assert len(used_ret) <= 1, "multiple retrievers are not supported in this script"
 
     if len(used_llm) == 1 and args.llm_overwrite != '':
         used_llm[0] = args.llm_overwrite
@@ -77,7 +77,7 @@ def experiment(args):
 if __name__ == "__main__":
 
     parser = argparse.ArgumentParser("run evaluate")
-    parser.add_argument("--config", default='scripts/configs/experiment_settings/default.json', help="configuration of retrieval-augmented LLM for evaluateion")
+    parser.add_argument("--config", default='scripts/configs/experiment_settings/default.json', help="configuration of retrieval-augmented LLM for evaluation")
     parser.add_argument("--config_system", default='scripts/configs/base_settings/system.json', help="path to system config file")
     parser.add_argument("--config_llms", default='scripts/configs/base_settings/llms.json', help="path to llm config file")
     parser.add_argument("--config_retrievers", default='scripts/configs/base_settings/retrievers.json', help="path to retriever config file")

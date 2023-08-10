@@ -1,7 +1,7 @@
 # RᴀLLᴇ
 
 RᴀLLᴇ is an accessible framework for developing and evaluating retrieval-augmented large language models (R-LLMs).  
-An overview of the main uses of RᴀLLᴇ on GUI is presented in [this video](https://www.youtube.com/watch?v=ShMNYSBJNnc).
+An overview of the main uses of RᴀLLᴇ on GUI is presented in [this video](https://youtu.be/JYbm75qnfTg).
 
 
 It is developed at [the Institute of Memory Technology Research and Development](https://www.kioxia.com/en-jp/rd/organization/memory-technology-rd.html) of [Kioxia Corporation](https://www.kioxia.com/en-jp/top.html).
@@ -19,9 +19,12 @@ Getting Started:
 - Installation instruction: [INSTALL.md](INSTALL.md).
 - Document indexing: [here](docs/indexing.md).
 
-Using RᴀLLᴇ
+Using RᴀLLᴇ:
 
 - Guides on GUI: [here](docs/gui_usage.md).
+- Evaluation with a Python script: [here](docs/evaluation.md).
+
+Note: evaluation experiments can be performed both [through the GUI](docs/gui_usage.md#evaluate-and-save-config) and using the script.
 
 <!-- ## Star History -->
 
