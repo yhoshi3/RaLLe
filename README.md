@@ -35,13 +35,16 @@ Note: evaluation experiments can be performed both [through the GUI](docs/gui_us
 
 Reference to cite when you use RᴀLLᴇ in a research paper:
 
-Coming soon.
-
-<!-- ```bibtex
-@article{
-    title={RaLLe: ...}, ...
+```bibtex
+@misc{ralle,
+      title={RaLLe: A Framework for Developing and Evaluating Retrieval-Augmented Large Language Models}, 
+      author={Yasuto Hoshi and Daisuke Miyashita and Youyang Ng and Kento Tatsuno and Yasuhiro Morioka and Osamu Torii and Jun Deguchi},
+      url={https://arxiv.org/abs/2308.10633},
+      year={2023},
+      eprint={2308.10633},
+      publisher={arXiv}
 }
-``` -->
+```
 
 ## License
 
