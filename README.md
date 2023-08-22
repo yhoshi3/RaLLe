@@ -23,6 +23,7 @@ Using RᴀLLᴇ:
 
 - Guides on GUI: [here](docs/gui_usage.md).
 - Evaluation with a Python script: [here](docs/evaluation.md).
+- Review the evaluation results with MLflow: [here](docs/mlflow.md)
 
 Note: evaluation experiments can be performed both [through the GUI](docs/gui_usage.md#evaluate-and-save-config) and using the script.
 

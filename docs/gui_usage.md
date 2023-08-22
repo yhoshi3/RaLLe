@@ -1,9 +1,16 @@
 # RᴀLLᴇ Usage on GUI
 
 Once the document indexing is completed, the retrievers (and the corresponding indices) and LLMs can be loaded via the [Gradio](https://www.gradio.app/)-based GUI to establish the inference chain that comprises the R-LLM.
-Run [scripts/chat.py](../scripts/chat.py) to launch the development screen on your localhost.
 
 An overview of the main uses of RᴀLLᴇ on GUI is presented in [this video](https://youtu.be/JYbm75qnfTg).
+
+## Launch the development screen on your localhost
+
+Run [scripts/chat.py](../scripts/chat.py)
+
+```bash
+python scripts/chat.py
+```
 
 ## Load LLMs and Retrievers (and corresponding indices)
 
@@ -58,10 +65,12 @@ On the `Chat` tab, you can test out the developed best practices using a simple 
 
 You can evaluate the developed chain on a dev set of the dataset.
 Specify the run name, number of questions to test (-1 for all questions), and batch size.
-The evaluation results can be viewed on MLflow GUI after running MLflow.
+
 To evaluate, click the `Evaluate` button after specifying the run name, the number of questions to test (-1 for all questions), and the suitable batch size.
 
 The evaluation can also be carried out using [evaluation script](../scripts/experiment.py). For detailed instructions, please refer to [this documentation](evaluation.md).
+
+The evaluation results can be reviewed on MLflow GUI after running MLflow (see [this documentation](mlflow.md)).
 
 ### Save Config
 

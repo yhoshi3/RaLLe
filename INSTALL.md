@@ -9,7 +9,7 @@ git clone --recursive https://github.com/yhoshi3/RaLLe
 cd ralle
 
 # install torch and transformers (required)
-conda install -y pytorch pytorch-cuda=11.8 -c pytorch -c nvidia
+conda install -y pytorch=2.0.1 pytorch-cuda=11.8 -c pytorch -c nvidia
 pip install transformers accelerate bitsandbytes
 
 # install ralle (required)
@@ -35,4 +35,12 @@ git apply ../diskann_bs_16k.patch
 export CMAKE_ARGS="-DOMP_PATH=$CONDA_PREFIX/lib -DMKL_PATH=$CONDA_PREFIX/lib -DMKL_INCLUDE_PATH=$CONDA_PREFIX/include"
 pip install .
 cd ..
+```
+
+**Notes:**
+
+Due to [PydanticUserError](https://github.com/mlflow/mlflow/issues/9331) when importing MLflow (as of Aug. 2023), downgrade MLflow as work around.
+
+```bash
+pip install mlflow==2.4.1
 ```
