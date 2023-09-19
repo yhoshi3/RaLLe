@@ -419,7 +419,7 @@ def run_chat(args):
                                             inputs=[chain_format_prompt_radios[i], chain_prompt_template_tas[i]],
                                             outputs=[chain_prompt_tas[i]])
 
-            # do indivisual process
+            # do individual process
             for i in range(max_len_chain):
                 chain_execute_btns[i].click(fn=disable, outputs=[chain_execute_chain_btn] + chain_execute_btns).then(
                                             fn=partial(action, step=i, history=chain_history), 

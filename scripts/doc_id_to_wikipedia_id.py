@@ -19,6 +19,8 @@ parser.add_argument('--output_path', default='data/text/corpus/kilt/doc_id_to_wi
 
 args = parser.parse_args()
 
+
+print('Loading the corpus...')
 with open(args.corpus_path) as file_in:
     corpus = [v.strip().split('\t') for v in file_in]
 

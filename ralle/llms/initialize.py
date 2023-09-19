@@ -4,7 +4,7 @@
 # LICENSE file in the root directory of this source tree.
 
 import importlib
-from transformers import AutoModelForCausalLM, AutoTokenizer, pipeline, TextStreamer, TextIteratorStreamer
+from transformers import AutoModelForCausalLM, AutoTokenizer, pipeline, TextIteratorStreamer
 import torch
 
 def initialize_llm(model_args={}, pipeline_args={}):

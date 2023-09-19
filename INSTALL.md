@@ -1,7 +1,7 @@
 
 # Install
 
-```
+```bash
 conda create python=3.9 pip -n ralle
 conda activate ralle
 

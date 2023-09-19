@@ -5,13 +5,14 @@
 
 import argparse
 import os
-import shutil
-import torch
 from torch import Tensor, no_grad
+from torch.utils.data import Dataset, DataLoader
 from transformers import AutoModel, AutoTokenizer, BitsAndBytesConfig
 import numpy
 import faiss
 from tqdm import tqdm
+import linecache
+import subprocess
 
 parser = argparse.ArgumentParser(description='make embeddings')
 parser.add_argument('--model', choices=['e5', 'e5-multi'], default='e5',
@@ -24,26 +25,18 @@ parser.add_argument('--col', type=int, default=1, help='column number of text')
 parser.add_argument('--col_title', type=int, default=2, help='column number of title')
 parser.add_argument('--use_8bit', action='store_true',
                     help='apply 8-bit quantization to encoder model parameters')
-parser.add_argument('--tmp_dir', default='tmp_embs', help='output directory name')
 parser.add_argument('--out_dir', default='results', help='output directory name')
 parser.add_argument('--batch_size', type=int, default=100,
                     help='batch size for encoding')
-parser.add_argument('--start', type=int, default=0,
-                    help='start from (start * repeat * interval)th sample')
-parser.add_argument('--repeat', type=int, default=1000,
-                    help='number of output files to be created')
-parser.add_argument('--interval', type=int, default=2000,
-                    help='number of passages in an output file')
-parser.add_argument('--resume', type=int, default=0,
-                    help='resume from (start+resume) x interval ')
 
 args = parser.parse_args()
 
 # preprocess
-# sprit header line and unnecessary quatations
+# sprit header line and unnecessary quotation marks
 file_processed = os.path.join(args.data_dir, 'kilt_w100_title_modified{}.tsv'.format('_subset_' + str(args.subset) if args.subset > 0 else ''))
 print('file to be processed: {}'.format(file_processed))
 if not os.path.exists(file_processed):
+    print('Loading the corpus...')
     with open(file_processed, 'w') as file_out:
         with open(os.path.join(args.data_dir, 'kilt_w100_title.tsv')) as file_in:
             for i, v in enumerate(file_in):
@@ -54,12 +47,26 @@ if not os.path.exists(file_processed):
                 if i == args.subset:
                     break
 
-# load preprocessed corpus file
-with open(file_processed) as file_in:
-    wiki_full = [v.split('\t') for v in file_in]
+# Dataset
+def corpus_fn(ids):
+    text = linecache.getline(file_processed, ids + 1)
+    return text
 
-num_data = len(wiki_full)
-print('number of passages: {}'.format(num_data))
+class CorpusDataset(Dataset):
+    def __init__(self, filename):
+        self.corpus_fn = lambda idx: linecache.getline(filename, idx + 1)
+        self.num_lines = int(subprocess.check_output(['wc', '-l', filename]).decode().split(' ')[0])
+
+    def __len__(self):
+        return self.num_lines
+    
+    def __getitem__(self, idx):
+        return self.corpus_fn(idx)
+
+dataset = CorpusDataset(file_processed)
+num_data = len(dataset)
+print('Total number of passages: {}'.format(num_data))
+dataloader = DataLoader(dataset, batch_size=args.batch_size, num_workers=4, pin_memory=True, shuffle=False)
 
 # encoder setting
 if args.model == 'e5' or args.model == 'e5-multi':
@@ -104,91 +111,22 @@ else:
     model.to('cuda:0')
 model.eval()
 
-start = args.start
-os.makedirs(args.tmp_dir, exist_ok=True)
 os.makedirs(args.out_dir, exist_ok=True)
 
-batch_size = args.batch_size
-write_interval = args.interval // args.batch_size
-write_repeat = args.repeat
-start_resume = args.resume
-num_batches = len(wiki_full) // batch_size + ((len(wiki_full) % batch_size) != 0)
-num_files = num_batches // write_interval + (num_batches % write_interval != 0)
-
-print('number of batches: {}'.format(num_batches))
-
-if (start + 1) * write_repeat * write_interval > num_batches:
-    end = num_batches
-    if  num_batches % write_interval != 0:
-        last_one = True
-    else:
-        last_one = False
-else:
-    end = (start + 1) * write_repeat * write_interval
-    last_one = False
-print('processing from {} to {}'.format((start * write_repeat + start_resume) * write_interval, end))
-
-cur = 0
-for i in tqdm(range((start * write_repeat + start_resume) * write_interval, end)):
-
-    # title and text joined by a comma
-    docs = ['{}, {}'.format(v[args.col_title].strip(), v[args.col]) for v in wiki_full[i*batch_size:(i+1)*batch_size]]
-    doc_embeddings = encode(docs, tokenizer=tokenizer, model=model)
-    
-    if i % write_interval == 0:
-        if end % write_interval != 0 and i // write_interval == end // write_interval:
-            if num_data % batch_size != 0:
-                out = torch.zeros((batch_size * (end - write_interval * (end // write_interval) - 1) + (num_data % batch_size), args.dim), device='cuda:0')
-            else:
-                out = torch.zeros((batch_size * (end - write_interval * (end // write_interval)), args.dim), device='cuda:0')
-        elif end % write_interval == 0 and i // write_interval == (end - 1) // write_interval:
-            if num_data % batch_size != 0:
-                out = torch.zeros((batch_size * (end - write_interval * ((end - 1) // write_interval) - 1) + (num_data % batch_size), args.dim), device='cuda:0')
-            else:
-                out = torch.zeros((batch_size * (end - write_interval * ((end - 1) // write_interval)), args.dim), device='cuda:0')
-        else:
-            out = torch.zeros((batch_size * write_interval, args.dim), device='cuda:0')
-        out[cur:cur+len(doc_embeddings)] = doc_embeddings[:]
-        cur += len(doc_embeddings)
-    elif i % write_interval == write_interval - 1:
-        out[cur:cur+len(doc_embeddings)] = doc_embeddings[:]
-        cur += len(doc_embeddings)
-        out = out.cpu().numpy()
-        faiss.normalize_L2(out)
-        numpy.save(os.path.join(args.tmp_dir, 'out_{:04}.npy'.format(i // write_interval)), out)
-        del out
-        cur = 0
-    else:
-        out[cur:cur+len(doc_embeddings)] = doc_embeddings[:]
-        cur += len(doc_embeddings)
-
-if last_one:
-    out = out.cpu().numpy()
-    faiss.normalize_L2(out)
-    numpy.save(os.path.join(args.tmp_dir, 'out_{:04}.npy'.format(i // write_interval)), out)
-
-# merge embeddings
 out_shape = (num_data, args.dim)
-
 out_file = os.path.join(args.out_dir, 'subset_{}_{}.npmmap'.format(args.dim, num_data) if args.subset > 0 
                                       else 'full_{}_{}.npmmap'.format(args.dim, num_data))
 
 fp = numpy.memmap(out_file, dtype=numpy.float32, mode='w+', shape=out_shape)
 del fp
 
-cur = 0
-for i in tqdm(range(num_files)):
-    filename = os.path.join(args.tmp_dir, 'out_{:04}.npy'.format(i))
-    if os.path.exists(filename):
-        tmp = numpy.load(filename).astype(numpy.float32)
-    else:
-        print('filename is not exist: {}'.format(filename))
-        tmp = numpy.zeros((args.interval, args.dim), dtype=numpy.float32)
+for i, batch in enumerate(tqdm(dataloader, ncols=80, desc='Encoding')):
+    # title and text joined by a comma
+    docs = ['{}, {}'.format(v.split('\t')[args.col_title].strip(), v.split('\t')[args.col]) for v in batch]
+    doc_embeddings = encode(docs, tokenizer=tokenizer, model=model)
+    doc_embeddings = doc_embeddings.cpu().numpy().astype(numpy.float32)
+    faiss.normalize_L2(doc_embeddings)
     fp = numpy.memmap(out_file, dtype=numpy.float32, mode='r+', shape=out_shape)
-    fp[cur:cur+len(tmp)] = tmp
+    fp[i*args.batch_size:(i+1)*args.batch_size] = doc_embeddings
     del fp
-    cur += len(tmp)
-
-print('Making embeddings completed!')
-
-shutil.rmtree(args.tmp_dir)
+print('Creating the embeddings completed!')

@@ -4,16 +4,12 @@
 # LICENSE file in the root directory of this source tree.
 
 import argparse
-import copy
 import os, shutil
 import json
 import subprocess
-from mlflow import log_metric, log_param, log_artifacts
-import numpy
-import sys
-import re
-from time import time, sleep
-from tqdm import tqdm
+from mlflow import log_metric, log_artifacts
+from time import time
+from tqdm import trange
 from ralle.evaluation.eval_kilt_plus_has_answer import evaluate
 from ralle.utils import read_config, load_llms, load_retrievers
 
@@ -126,7 +122,7 @@ def evaluate_ralle(config_exp, config_base, funcs=None):
             cnt_batch = 0
             qa_batch = []
             out = []
-            for cnt, line in zip(tqdm(range(num_qa)), fin):
+            for cnt, line in zip(trange(num_qa), fin):
                 if 'resume' in config_exp['chain_config']['dataset']:
                     if cnt <= config_exp['chain_config']['dataset']['resume']:
                         continue
@@ -227,7 +223,7 @@ def evaluate_ralle(config_exp, config_base, funcs=None):
 if __name__ == "__main__":
 
     parser = argparse.ArgumentParser("run evaluate")
-    parser.add_argument("--config", default='scripts/configs/experiment_settings/default.json', help="configuration of retrieval-augmented LLM for evaluateion")
+    parser.add_argument("--config", default='scripts/configs/experiment_settings/default.json', help="configuration of retrieval-augmented LLM for evaluation")
     parser.add_argument("--config_llms", default='scripts/configs/base_settings/llms.json', help="path to llm config file")
     parser.add_argument("--config_retrievers", default='scripts/configs/base_settings/retrievers.json', help="path to retriever config file")
     parser.add_argument("--config_query_encoders", default='scripts/configs/base_settings/query_encoders.json', help="path to query encoders config file")

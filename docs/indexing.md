@@ -4,7 +4,7 @@ In this document, we show how to prepare document index using a small subset of 
 
 ## prepare data directory
 
-```
+```bash
 export data=/path/to/data
 mkdir -p ${data}
 ```
@@ -13,9 +13,9 @@ mkdir -p ${data}
 
 ### KILT corpus (knowledge source)
 
-```
+```bash
 export kilt_corpus_dir=${data}/text/corpus/kilt
-mkdir -p ${kilt_data_dir}
+mkdir -p ${kilt_corpus_dir}
 ```
 
 Download the following files in the `kilt_corpus_dir` directory from KILT web page. See [KILT/retrievers](https://github.com/facebookresearch/KILT/tree/main/kilt/retrievers) for the detail.
@@ -25,7 +25,7 @@ Download the following files in the `kilt_corpus_dir` directory from KILT web pa
 
 ### KILT dataset
 
-```
+```bash
 cd KILT
 mkdir data
 python scripts/download_all_kilt_data.py
@@ -37,64 +37,64 @@ See [KILT](https://github.com/facebookresearch/KILT) for the detail.
 
 ## make doc_id to wikipedia_id mapping file
 
-```
-python scripts/doc_id_to_wikipedia_id.py --corpus_path ${kilt_corpus_dir}/kilt_w100_title.tsv --mapping_path ${kilt_corpus_dir}/mapping_KILT_title.p --output_path ${kilt_corpus_dir}/kilt/doc_id_to_wikipedia_id_mapping.p
+```bash
+python scripts/doc_id_to_wikipedia_id.py --corpus_path ${kilt_corpus_dir}/kilt_w100_title.tsv --mapping_path ${kilt_corpus_dir}/mapping_KILT_title.p --output_path ${kilt_corpus_dir}/doc_id_to_wikipedia_id_mapping.p
 ```
 
 ## preprocess for corpus and make embeddings
 
 In this example, we use [intfloat/e5-large-v2](https://huggingface.co/intfloat/e5-large-v2) as an embedding model. We process only 499992 passages out of 22 million passages. This takes about 25 mins with single A100(40GB).
 
-```
+```bash
 export emb_dir=${data}/dense/e5/8b/corpus/kilt
 CUDA_VISIBLE_DEVICES=0 python scripts/make_embeddings.py --data_dir ${kilt_corpus_dir} --subset 499992 --out_dir ${emb_dir} --use_8bit
 ```
 
-This script creates the following files.
+This script creates the following files:
 
 - `${kilt_corpus_dir}/kilt_w100_title_modified_subset_499992.tsv`
-    - Header line and unnecessary quatations are removed from original tsv file.
+    - Header lines and unnecessary quotation marks are removed from the original tsv file.
 - `${emb_dir}/subset_1024_499992.npmmap`
 
 
 ## build faiss index
 
 - flat index (~1 second)
-    - ```
+    - ```bash
       python scripts/build_faiss_index.py --embeddings ${emb_dir}/subset_1024_499992.npmmap --index_type flat
       ```
-    - This script creates the following index file.
+    - This script creates the following index file:
         - `${emb_dir}/index/faiss-flat/subset_1024_499992.index`
 
 - hnsw index (~30 seconds)
-    - ```
+    - ```bash
       python scripts/build_faiss_index.py --embeddings ${emb_dir}/subset_1024_499992.npmmap --index_type hnsw
       ```
-    - This script creates the following index file.
+    - This script creates the following index file:
         - `${emb_dir}/index/faiss-hnsw/subset_m16_efc40_1024_499992.index`
 
 ## build BM25 index (optional, ~2 minutes)
 
-```
+```bash
 python scripts/build_bm25_index.py --wiki_passages_file ${kilt_corpus_dir}/kilt_w100_title_modified_subset_499992.tsv
 ```
 
-This script create the following index directory.
+This script create the following index directory:
 
 - `${data}/bm25/corpus/kilt/kilt_w100_title_modified_subset_499992`
     - Note that the directory name is automatically created from `${kilt_corpus_dir}` by replacing '/text/' with '/bm25/'.
 
 ## build DiskANN index (optional, ~20 minutes)
 
-```
+```bash
 python scripts/build_diskann_index.py --npmmap_file ${emb_dir}/subset_1024_499992.npmmap --index_dir ${emb_dir}/index/diskann/subset_499992 --num_threads 16
 ```
 
 ## Pickup answerable questions from KILT dataset
 
-When we use the build indice for the small subset of corpus, we can not find useful information to answer the most of questions in datasets. So here, we pick up only answerable questions from dataset.
+When we use the build indices for the small subset of corpus, we can not find useful information to answer the most of questions in datasets. So here, we pick up only answerable questions from dataset.
 
-```
+```bash
 python scripts/question_pickup.py --dataset_path KILT/data/nq-train-kilt.jsonl --corpus_path ${kilt_corpus_dir}/kilt_w100_title_modified_subset_499992.tsv --mapping_path ${kilt_corpus_dir}/mapping_KILT_title.p --number_of_questions 100 --output_path data/text/query/kilt/nq-train-kilt_100.jsonl
 
 python scripts/question_pickup.py --dataset_path KILT/data/nq-dev-kilt.jsonl --corpus_path ${kilt_corpus_dir}/kilt_w100_title
@@ -152,4 +152,3 @@ Prepared index data so far can be registered in config files as below. Note that
 - [dataset](../scripts/configs/base_settings/datasets.json)
 
 Congratulations! You are now ready to use RᴀLLᴇ GUI. Please refer to the [instruction](gui_usage.md) or [screencast](https://youtu.be/JYbm75qnfTg) for the usage.
-

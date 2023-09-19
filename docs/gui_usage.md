@@ -14,8 +14,9 @@ python scripts/chat.py
 
 ## Load LLMs and Retrievers (and corresponding indices)
 
-To load the pre-trained language models and retrievers (indices) in the `Load Models` tab, 
-1. Select the LLMs and Retrievers you want to use from the list of available models (and correponding indices) written in the configuration file.
+To load the pre-trained language models and retrievers (indices) in the `Load Models` tab,
+
+1. Select the LLMs and Retrievers you want to use from the list of available models (and corresponding indices) written in the configuration file.
 2. Click the `Load Models` button to load them.
 
 ![Load Model](figures/load_models.png)
@@ -25,7 +26,6 @@ To load the pre-trained language models and retrievers (indices) in the `Load Mo
 The chain of action enables users to design pipelines for multi-step inference of R-LLMs, such as [*retrieve*]-[*generate*], or more intricate workflows such as [*rewrite query*]-[*retrieve*]-[*summarize the retrieved document*]-...-[*generate*].
 
 <img src="figures/dev_load_dataset_retrieve.png" width="70%">
-
 
 To develop the inference chain in `Develop chain` tab, follow these steps:
 
