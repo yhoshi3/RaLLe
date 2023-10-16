@@ -22,10 +22,10 @@ def initialize_corpus(kwargs, skip_load_corpus=False):
         def corpus_text_fn(ids):
             return None
 
-        def corpus_title_fn(ids):
-            return None
-
         def corpus_doc_id_fn(ids):
+            return None
+        
+        def doc_id_to_title_fn(ids):
             return None
 
         def doc_id_to_corpus_id_fn(doc_id):
@@ -37,13 +37,13 @@ def initialize_corpus(kwargs, skip_load_corpus=False):
             text = linecache.getline(kwargs['corpus_path'], ids + 1)
             return text.split(kwargs['delimiter'])[kwargs['col_text']].strip()
 
-        def corpus_title_fn(ids):
-            text = linecache.getline(kwargs['corpus_path'], ids + 1)
-            return text.split(kwargs['delimiter'])[kwargs['col_title']].strip()
-
         def corpus_doc_id_fn(ids):
             text = linecache.getline(kwargs['corpus_path'], ids + 1)
             return int(text.split(kwargs['delimiter'])[kwargs['col_doc_id']].strip())
+
+        def doc_id_to_title_fn(ids):
+            text = linecache.getline(kwargs['corpus_path'], ids)
+            return text.split(kwargs['delimiter'])[kwargs['col_title']].strip()
 
         num_lines = int(subprocess.check_output(['wc', '-l', kwargs['corpus_path']]).decode().split(' ')[0])
         doc_id_to_corpus_id = {corpus_doc_id_fn(i): i for i in range(num_lines)}
@@ -51,4 +51,4 @@ def initialize_corpus(kwargs, skip_load_corpus=False):
             return doc_id_to_corpus_id[doc_id]
         t1 = time(); print('loading corpus...done ({:.2f} sec)'.format(t1-t0))
 
-    return corpus_text_fn, corpus_title_fn, corpus_doc_id_fn, doc_id_to_corpus_id_fn, doc_id_to_wikipedia_id_mapping_fn
+    return corpus_text_fn, corpus_doc_id_fn, doc_id_to_title_fn, doc_id_to_corpus_id_fn, doc_id_to_wikipedia_id_mapping_fn

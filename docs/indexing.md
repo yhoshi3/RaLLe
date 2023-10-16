@@ -2,14 +2,14 @@
 
 In this document, we show how to prepare document index using a small subset of KILT passages for quick start. You can make full size index of KILT passages or your own documents in the same way.
 
-## prepare data directory
+## Prepare data directory
 
 ```bash
 export data=/path/to/data
 mkdir -p ${data}
 ```
 
-## download data
+## Download data
 
 ### KILT corpus (knowledge source)
 
@@ -35,13 +35,13 @@ cd ..
 
 See [KILT](https://github.com/facebookresearch/KILT) for the detail.
 
-## make doc_id to wikipedia_id mapping file
+## Make doc_id to wikipedia_id mapping file
 
 ```bash
 python scripts/doc_id_to_wikipedia_id.py --corpus_path ${kilt_corpus_dir}/kilt_w100_title.tsv --mapping_path ${kilt_corpus_dir}/mapping_KILT_title.p --output_path ${kilt_corpus_dir}/doc_id_to_wikipedia_id_mapping.p
 ```
 
-## preprocess for corpus and make embeddings
+## Preprocess for corpus and make embeddings
 
 In this example, we use [intfloat/e5-large-v2](https://huggingface.co/intfloat/e5-large-v2) as an embedding model. We process only 499992 passages out of 22 million passages. This takes about 25 mins with single A100(40GB).
 
@@ -57,23 +57,29 @@ This script creates the following files:
 - `${emb_dir}/subset_1024_499992.npmmap`
 
 
-## build faiss index
+## Build Faiss index
 
-- flat index (~1 second)
-    - ```bash
-      python scripts/build_faiss_index.py --embeddings ${emb_dir}/subset_1024_499992.npmmap --index_type flat
-      ```
-    - This script creates the following index file:
-        - `${emb_dir}/index/faiss-flat/subset_1024_499992.index`
+### Flat index (~1 second)
 
-- hnsw index (~30 seconds)
-    - ```bash
-      python scripts/build_faiss_index.py --embeddings ${emb_dir}/subset_1024_499992.npmmap --index_type hnsw
-      ```
-    - This script creates the following index file:
-        - `${emb_dir}/index/faiss-hnsw/subset_m16_efc40_1024_499992.index`
+```bash
+python scripts/build_faiss_index.py --embeddings ${emb_dir}/subset_1024_499992.npmmap --index_type flat
+```
 
-## build BM25 index (optional, ~2 minutes)
+This script creates the following index file:
+
+`${emb_dir}/index/faiss-flat/subset_1024_499992.index`
+
+### HNSW index (~30 seconds)
+
+```bash
+python scripts/build_faiss_index.py --embeddings ${emb_dir}/subset_1024_499992.npmmap --index_type hnsw
+```
+
+This script creates the following index file:
+
+`${emb_dir}/index/faiss-hnsw/subset_m16_efc40_1024_499992.index`
+
+## Build BM25 index (optional, ~2 minutes)
 
 ```bash
 python scripts/build_bm25_index.py --wiki_passages_file ${kilt_corpus_dir}/kilt_w100_title_modified_subset_499992.tsv
@@ -84,7 +90,7 @@ This script create the following index directory:
 - `${data}/bm25/corpus/kilt/kilt_w100_title_modified_subset_499992`
     - Note that the directory name is automatically created from `${kilt_corpus_dir}` by replacing '/text/' with '/bm25/'.
 
-## build DiskANN index (optional, ~20 minutes)
+## Build DiskANN index (optional, ~20 minutes)
 
 ```bash
 python scripts/build_diskann_index.py --npmmap_file ${emb_dir}/subset_1024_499992.npmmap --index_dir ${emb_dir}/index/diskann/subset_499992 --num_threads 16
@@ -102,7 +108,7 @@ _modified_subset_499992.tsv --mapping_path ${kilt_corpus_dir}/mapping_KILT_title
 umber_of_questions 100 --output_path data/text/query/kilt/nq-dev-kilt_100.jsonl
 ```
 
-## data directories
+## Data directories
 
 Below is the directory structure after completing all the above indexing processes .
 
@@ -143,9 +149,10 @@ ${data}
             └── nq-train-kilt_100.jsonl
 ```
 
-## register index data in config base_settings files
+## Register the built index in the config files
 
-Prepared index data so far can be registered in config files as below. Note that we assume `${data} = ./data` in these example files.
+Prepared index data so far can be registered in config files as below.
+Note that we assume `${data} = ./data` in these example files.
 
 - [retriever](../scripts/configs/base_settings/retrievers.json)
 - [corpus](../scripts/configs/base_settings/corpora.json)

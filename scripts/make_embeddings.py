@@ -18,7 +18,9 @@ parser = argparse.ArgumentParser(description='make embeddings')
 parser.add_argument('--model', choices=['e5', 'e5-multi'], default='e5',
                     help='encoder model name')
 parser.add_argument('--data_dir', default='',
-                    help='directory path where kilt_w100_title.tsv exists')
+                    help='directory path where a tsv file of the corpus exists')
+parser.add_argument('--corpus_name', default='kilt_w100_title',
+                    help='name of the corpus tsv file')
 parser.add_argument('--subset', type=int, default=0,
                     help='if subset<=0, process all the lines, else process only subset lines')
 parser.add_argument('--col', type=int, default=1, help='column number of text')
@@ -33,12 +35,12 @@ args = parser.parse_args()
 
 # preprocess
 # sprit header line and unnecessary quotation marks
-file_processed = os.path.join(args.data_dir, 'kilt_w100_title_modified{}.tsv'.format('_subset_' + str(args.subset) if args.subset > 0 else ''))
+file_processed = os.path.join(args.data_dir, '{}_modified{}.tsv'.format(args.corpus_name, '_subset_' + str(args.subset) if args.subset > 0 else ''))
 print('file to be processed: {}'.format(file_processed))
 if not os.path.exists(file_processed):
     print('Loading the corpus...')
     with open(file_processed, 'w') as file_out:
-        with open(os.path.join(args.data_dir, 'kilt_w100_title.tsv')) as file_in:
+        with open(os.path.join(args.data_dir, '{}.tsv'.format(args.corpus_name))) as file_in:
             for i, v in enumerate(file_in):
                 if i == 0:
                     continue

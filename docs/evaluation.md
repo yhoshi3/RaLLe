@@ -17,7 +17,7 @@ The example of the [configuration file](../scripts/configs/experiment_settings/s
     "chain_config": {
         "dataset": {
             "dataset_name": "NQ",
-            "num_evaluate": -1,
+            "num_evaluate": 10,
             "batch_size": 20
         },
         "len_chain": 2,
@@ -25,7 +25,7 @@ The example of the [configuration file](../scripts/configs/experiment_settings/s
             {
                 "prompt_template": "{question}",
                 "function": "Retriever",
-                "retriever_name": "e5-8b_flat",
+                "retriever_name": "flat_subset_499992",
                 "npassage": 5,
                 "f-strings_or_eval": "f-strings"
             },
@@ -40,8 +40,13 @@ The example of the [configuration file](../scripts/configs/experiment_settings/s
 }
 ```
 
-- "dataset_name": The names of the datasets for evaluation. For evaluation in the kilt benchmark, select one of the following options: FEV, AY2, WnWi, WnCw, T-REx, zsRE, NQ, HoPo, TQA, ELI5, or WoW.
-- "num_evaluate": The number of questions from the development set to evaluate (default: -1 for all).
+- `dataset_name` : The names of the datasets for evaluation. For evaluation in the kilt benchmark, select one of the following options: FEV, AY2, WnWi, WnCw, T-REx, zsRE, NQ, HoPo, TQA, ELI5, or WoW.
+- `num_evaluate` : The number of questions from the development set to evaluate the chain (-1 for all questions).
+- `retriever_name` : The name of the retriever (including the corresponding index and corpus) specified in [scripts/configs/base_settings/retrievers.json](../scripts/configs/base_settings/retrievers.json)
+- `llm_name` : The LLM name specified in [scripts/configs/base_settings/llms.json](../scripts/configs/base_settings/llms.json)
+
+When evaluated with the given settings, the EM score is 0.1 (10.0%) because the corpus is a subset.
+However, when the entire corpus is used, the EM score increases to 36.1% with the provided prompt on the entire NQ dataset.
 
 ## Metrics
 

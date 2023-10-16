@@ -21,7 +21,7 @@
     },
     "llama-2-13b-chat": {
         "model_args": {
-            "model_type": "meta-llama/Llama-2-13b-chat",
+            "model_type": "meta-llama/Llama-2-13b-chat-hf",
             "device_map": {"": 0},
             "quantization_config": {
                 "quantization_type": "transformers.BitsAndBytesConfig",

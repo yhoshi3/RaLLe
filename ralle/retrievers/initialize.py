@@ -15,7 +15,7 @@ class Retriever:
         self.embedding_fn = query_encoders[kwargs['query_encoder_name']] \
                             if 'query_encoder_name' in kwargs else lambda x: x
         self.vector_index = initialize_vector_index(kwargs)[0]
-        self.text_fn, self.title_fn, self.doc_id_fn, \
+        self.text_fn, self.doc_id_fn, self.doc_id_to_title_fn, \
         self.doc_id_to_corpus_id_fn, self.doc_id_to_wiki_id_fn = corpora[kwargs['corpus_name']]
 
     def search(self, query, k=1):
@@ -32,7 +32,7 @@ class Retriever:
                 score.append([h.score for h in out])
                 doc_id.append([int(h.docid) for h in out])
                 wiki_id.append([self.doc_id_to_wiki_id_fn(int(h.docid)) for h in out])
-                title.append([self.title_fn(int(h.docid)) for h in out])
+                title.append([self.doc_id_to_title_fn(int(h.docid)) for h in out])
                 text.append([json.loads(h.raw)['contents'] for h in out])
             return score, doc_id, wiki_id, title, text
 
@@ -41,7 +41,7 @@ class Retriever:
             score, out = self.vector_index.search(q_emb, k)
             doc_id = [[self.doc_id_fn(ids) for ids in o] for o in out]
             wiki_id = [[self.doc_id_to_wiki_id_fn(did) for did in d] for d in doc_id]
-            title = [[self.title_fn(ids) for ids in o] for o in out]
+            title = [[self.doc_id_to_title_fn(ids) for ids in d] for d in doc_id]
             text = [[self.text_fn(ids) for ids in o] for o in out]
             return score, doc_id, wiki_id, title, text
 

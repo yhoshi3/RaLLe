@@ -3,8 +3,7 @@
 RᴀLLᴇ is an accessible framework for developing and evaluating retrieval-augmented large language models (R-LLMs).  
 An overview of the main uses of RᴀLLᴇ on GUI is presented in [this video](https://youtu.be/JYbm75qnfTg).
 
-
-It is developed at [the Institute of Memory Technology Research and Development](https://www.kioxia.com/en-jp/rd/organization/memory-technology-rd.html) of [Kioxia Corporation](https://www.kioxia.com/en-jp/top.html).
+RᴀLLᴇ is developed at [the Institute of Memory Technology Research and Development](https://www.kioxia.com/en-jp/rd/organization/memory-technology-rd.html) of [Kioxia Corporation](https://www.kioxia.com/en-jp/top.html).
 
 ## Key Features
 
@@ -18,6 +17,7 @@ Getting Started:
 
 - Installation instruction: [INSTALL.md](INSTALL.md).
 - Document indexing: [here](docs/indexing.md).
+- Using custom datasets: [here](docs/using_custom_datasets.md).
 
 Using RᴀLLᴇ:
 
@@ -27,13 +27,11 @@ Using RᴀLLᴇ:
 
 Note: evaluation experiments can be performed both [through the GUI](docs/gui_usage.md#evaluate-and-save-config) and using the script.
 
-<!-- ## Star History -->
-
-<!-- [star-history.com](https://star-history.com/) -->
-
 ## Reference
 
-Reference to cite when you use RᴀLLᴇ in a research paper:
+News: Our paper has been accepted by EMNLP 2023 System Demonstrations.
+
+[Reference to cite when you use RᴀLLᴇ in a research paper:](https://arxiv.org/abs/2308.10633)
 
 ```bibtex
 @misc{ralle,
@@ -49,4 +47,3 @@ Reference to cite when you use RᴀLLᴇ in a research paper:
 ## License
 
 RᴀLLᴇ is MIT-licensed, refer to the [LICENSE file](../LICENSE) for more details.
-
