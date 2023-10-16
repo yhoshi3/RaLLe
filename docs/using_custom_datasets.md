@@ -55,7 +55,7 @@ texts = [
 
 titles = ["Alice", "Bob", "Charlie"] # or [""]*3 if unnecessary
 
-corpus_path = 'data/text/corpus/custom/my_corpus.tsv'
+corpus_path = 'data/text/corpus/my_corpus/my_corpus.tsv'
 with open(corpus_path, 'w') as file_out:
     file_out.write('id{}text{}title{}'.format('\t', '\t', '\n')) # header
     for i, (text, title) in enumerate(zip(texts, titles)):
@@ -70,7 +70,7 @@ import pickle
 n_documents = 3  # total number of texts
 output = {i:i for i in range(1, n_documents + 1)}
 
-output_path = 'data/text/corpus/custom/doc_id_to_wikipedia_id_mapping.p'
+output_path = 'data/text/corpus/my_corpus/doc_id_to_wikipedia_id_mapping.p'
 
 with open(output_path, 'wb') as f:
     pickle.dump(output, f)
@@ -107,7 +107,7 @@ python scripts/build_faiss_index.py \
     --index_type flat
 ```
 
-The built index will be stored in `data/dense/e5/8b/corpus/custom/index/faiss-flat/full_1024_3.index`
+The built index will be stored in `data/dense/e5/8b/corpus/my_corpus/index/faiss-flat/full_1024_3.index`
 
 #### BM25
 
